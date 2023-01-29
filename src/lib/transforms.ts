@@ -76,3 +76,24 @@ export function isAtMost<T extends number, Source>(maxValue: number): TypeTransf
 export function regex<Source>(r: RegExp): TypeTransform<string, string, Source> {
     return validate('matches ' + r.source, value => r.test(value));
 }
+
+/**
+ * Converts an input of `T | null` to 'T | undefined' by mapping null to undefined.
+ */
+export function nullToUndefined<T, Source>(): TypeTransform<T | undefined, T | null, Source> {
+    return transform(value => value ?? undefined);
+}
+
+/**
+ * Converts an input of `T | undefined` to 'T | null' by mapping null to undefined.
+ */
+export function undefinedToNull<T, Source>(): TypeTransform<T | null, T | undefined, Source> {
+    return transform(value => value ?? null);
+}
+
+/**
+ * Uses a fallback value if the input value is null or undefined.
+ */
+export function defaultValue<T, Source>(defaultValue: T): TypeTransform<T, T | null | undefined, Source> {
+    return transform(value => value ?? defaultValue);
+}
