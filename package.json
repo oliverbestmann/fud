@@ -1,17 +1,21 @@
 {
-  "name": "fud",
+  "name": "fud-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "typescript": "^4.9.4"
-  },
+  "files": [
+    "dist",
+    "package.json",
+    "package-lock.json"
+  ],
+  "author": "Oliver Bestmann",
+  "license": "MIT",
   "devDependencies": {
+    "typescript": "^4.9.4",
     "@types/jest": "^29.4.0",
     "jest": "^29.4.1",
     "ts-jest": "^29.0.5"
