@@ -44,6 +44,10 @@ export class Type<T, Source> {
     ) {
     }
 
+    /**
+     * Applies a sequence of type transformations to this type. While a transformation might
+     * change the target type, it will always preserve the Source type of the input type.
+     */
     public pipe<Out>(a: TypeTransform<Out, T, Source>): Type<Out, Source>
     public pipe<Out, A>(a: TypeTransform<A, T, Source>, b: TypeTransform<Out, A, Source>): Type<Out, Source>
     public pipe<Out, A, B>(a: TypeTransform<A, T, Source>, b: TypeTransform<B, A, Source>, c: TypeTransform<Out, B, Source>): Type<Out, Source>
@@ -57,12 +61,20 @@ export class Type<T, Source> {
         return result;
     }
 
+    /**
+     * Parses the given input into the target type. If parsing fails,
+     * this method will return an instance of InvalidValue.
+     */
     public parseSafe(value: unknown): T | InvalidValue {
-        return this.transformValue(value as Source)
+        return this.transformValue(value as Source);
     }
 
+    /**
+     * Parses the input into the target type. If parsing fails this method
+     * will throw an Error exception.
+     */
     public parse(value: unknown): T {
-        const res = this.parseSafe(value)
+        const res = this.parseSafe(value);
         if (isInvalidValue(res)) {
             throw new Error(res.toString());
         }
@@ -70,19 +82,32 @@ export class Type<T, Source> {
         return res;
     }
 
+    /**
+     * Parses the given input into the target type. If parsing fails this method
+     * will return null. If the target type is nullable, this might lead to confusion
+     * In that case, it might be better to use `parseSafe`.
+     */
     public parseOrNull(value: unknown): T | null {
-        const res = this.parseSafe(value)
+        const res = this.parseSafe(value);
         return isInvalidValue(res) ? null : res;
     }
 }
 
 /**
- * Makes a type nullable.
- *
- * This can not be a pipe function.
- * if you would go with a simple `string().pipe(nullable())` the value must already be non-null before
- * it reaches the nullable pipe function. You would have to write something like
- * `union(nullType(), string()).pipe(nullable())`. In this case, the call to nullable would be redundant.
+ * Makes a type optional. A optional type is either null, undefined or matches the type T.
+ * null and undefined are both kept unchanged.
+ */
+export function optional<T, Source>(type: Type<T, Source>): Type<T | undefined | null, Source | undefined | null> {
+    return new Type(type.name + ' | undefined | null', value => {
+        return value == null
+            ? value as (undefined | null)
+            : type.transformValue(value);
+    });
+}
+
+/**
+ * Makes a type nullable. A nullable type is either null or matches the type T.
+ * An undefined input value is conveniently mapped to null.
  */
 export function nullable<T, Source>(type: Type<T, Source>): Type<T | null, Source | null> {
     return new Type(type.name + ' | null', value => {

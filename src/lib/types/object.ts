@@ -15,6 +15,9 @@ type SourcesOf<T extends object> = {
     [K in keyof T]: (T[K] extends Type<infer Ty, infer Source> ? Source : never)
 }
 
+/**
+ * Creates an object type.
+ */
 export function object<T extends object>(shape: T): ObjectType<TypesOf<T>, SourcesOf<T>> {
     const transform = (value: any) => {
         if (value == null) {

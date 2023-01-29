@@ -14,9 +14,9 @@ Compared to `zod`, you don't pay for what you don't use: Almost everything is tr
 
 ```ts
 const personType = object({
-    age: number().pipe(min(18)),
+    age: number().pipe(isAtLeast(18)),
     name: string(),
-    gender: nullable(string()),
+    gender: optional(string()),
 });
 
 // static type
