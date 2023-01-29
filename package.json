@@ -5,8 +5,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "build": "rm -rf dist && tsc",
     "test": "jest",
-    "release": "npm run test && npx release-it"
+    "release": "npm run build && npm run test && npx release-it"
   },
   "files": [
     "dist",
