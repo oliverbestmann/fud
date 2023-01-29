@@ -57,8 +57,12 @@ export class Type<T, Source> {
         return result;
     }
 
-    public parse(value: Source): T {
-        const res = this.transformValue(value);
+    public parseSafe(value: unknown): T | InvalidValue {
+        return this.transformValue(value as Source)
+    }
+
+    public parse(value: unknown): T {
+        const res = this.parseSafe(value)
         if (isInvalidValue(res)) {
             throw new Error(res.toString());
         }
@@ -66,8 +70,8 @@ export class Type<T, Source> {
         return res;
     }
 
-    public parseOrNull(value: Source): T | null {
-        const res = this.transformValue(value);
+    public parseOrNull(value: unknown): T | null {
+        const res = this.parseSafe(value)
         return isInvalidValue(res) ? null : res;
     }
 }
