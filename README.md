@@ -1,10 +1,8 @@
 # FUD
 
-```
-Fear, uncertainty and doubt (often shortened to FUD) is a propaganda tactic used in sales, marketing,
-public relations, politics, polling and cults. FUD is generally a strategy to influence perception
-by disseminating negative and dubious or false information and a manifestation of the appeal to fear.
-```
+> Fear, uncertainty and doubt (often shortened to FUD) is a propaganda tactic used in sales, marketing,
+> public relations, politics, polling and cults. FUD is generally a strategy to influence perception
+> by disseminating negative and dubious or false information and a manifestation of the appeal to fear.
 
 ## What?
 
